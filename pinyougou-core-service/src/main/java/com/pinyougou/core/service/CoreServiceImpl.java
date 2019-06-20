@@ -1,6 +1,5 @@
-package com.pinyougou.core.service.Impl;
+package com.pinyougou.core.service;
 
-import com.pinyougou.core.service.CoreService;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 
@@ -10,21 +9,23 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 项目名:pinyougouDemo
- * 包名: com.pinyougou.core.service.Impl
- * 作者: Yanglinlong
- * 日期: 2019/6/19 21:47
+ * 描述
+ *
+ * @author 三国的包子
+ * @version 1.0
+ * @package com.pinyougou.core.service *
+ * @since 1.0
  */
-public class CoreServiceImpl<T> implements CoreService<T> {
-    //受保护的 继承的时候可以使用到的
-    protected Mapper<T> baseMapper;
-
-    protected Class<T> clazz;
-
+public abstract class CoreServiceImpl<T> implements CoreService<T> {
     @Override
     public List<T> findAll() {
         return selectAll();
     }
+
+    //受保护的 继承的时候可以使用到的
+    protected Mapper<T> baseMapper;
+
+    protected Class<T> clazz;
 
     @Override
     public void add(T record) {
@@ -127,7 +128,7 @@ public class CoreServiceImpl<T> implements CoreService<T> {
         return baseMapper.updateByPrimaryKeySelective(record);
     }
 
-  /*  @Override
+    @Override
     public int updateByExample(T record, Object example) {
         return baseMapper.updateByExample(record, example);
     }
@@ -135,5 +136,5 @@ public class CoreServiceImpl<T> implements CoreService<T> {
     @Override
     public int updateByExampleSelective(T record, Object example) {
         return baseMapper.updateByExampleSelective(record, example);
-    }*/
+    }
 }
