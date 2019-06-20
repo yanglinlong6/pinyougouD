@@ -9,9 +9,6 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.persistence.Id;
-import java.util.Arrays;
-
 /**
  * 项目名:pinyougouDemo
  * 包名: com.pinyougou.core.service.Impl
