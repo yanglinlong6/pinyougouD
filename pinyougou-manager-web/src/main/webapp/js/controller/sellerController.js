@@ -9,6 +9,22 @@
         searchEntity:{}
     },
     methods: {
+        updateStatus:function (id,status) {
+            axios.get('/seller/updateStatus.shtml',{
+                params:{
+                    id:id,
+                    status:status
+                }
+            }).then(function (response) {
+                console.log(response);
+                if(response.data.success){
+                    app.searchEntity={};
+                    app.searchList(1);
+                }
+            }).catch(function (error) {
+                console.log("1231312131321");
+            });
+        },
         searchList:function (curPage) {
             axios.post('/seller/search.shtml?pageNo='+curPage,this.searchEntity).then(function (response) {
                 //获取数据

@@ -1,13 +1,13 @@
 package com.pinyougou.manager.controller;
 import java.util.List;
 
+import com.pinyougou.pojo.Result;
 import org.springframework.web.bind.annotation.*;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.pojo.TbSeller;
 import com.pinyougou.sellergoods.service.SellerService;
 
 import com.github.pagehelper.PageInfo;
-import entity.Result;
 /**
  * controller
  * @author Administrator
@@ -103,5 +103,14 @@ public class SellerController {
                                       @RequestBody TbSeller seller) {
         return sellerService.findPage(pageNo, pageSize, seller);
     }
-	
+	@RequestMapping("/updateStatus")
+	public Result updateStatus(String id,String status){
+		try {
+			sellerService.updateStatus(id,status);
+			return new Result(true,"成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(false,"失败");
+		}
+	}
 }

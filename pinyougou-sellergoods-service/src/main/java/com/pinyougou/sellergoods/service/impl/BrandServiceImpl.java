@@ -11,7 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import com.pinyougou.core.service.CoreServiceImpl;
 
 import tk.mybatis.mapper.entity.Example;
-
 import com.pinyougou.mapper.TbBrandMapper;
 import com.pinyougou.pojo.TbBrand;
 
@@ -75,8 +74,8 @@ public class BrandServiceImpl extends CoreServiceImpl<TbBrand>  implements Brand
         //序列化再反序列化
         String s = JSON.toJSONString(info);
         PageInfo<TbBrand> pageInfo = JSON.parseObject(s, PageInfo.class);
-
-        return pageInfo;
+         System.out.println(pageInfo);
+         return pageInfo;
     }
 	
 }

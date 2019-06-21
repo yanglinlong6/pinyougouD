@@ -1,19 +1,23 @@
 package com.pinyougou.sellergoods.service.impl;
-import java.util.List;
-
-import com.pinyougou.sellergoods.service.SpecificationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo; 									  
-import org.apache.commons.lang3.StringUtils;
+import com.github.pagehelper.PageInfo;
 import com.pinyougou.core.service.CoreServiceImpl;
-
+import com.pinyougou.mapper.TbSpecificationMapper;
+import com.pinyougou.mapper.TbSpecificationOptionMapper;
+import com.pinyougou.pojo.Specification;
+import com.pinyougou.pojo.TbSpecification;
+import com.pinyougou.pojo.TbSpecificationOption;
+import com.pinyougou.sellergoods.service.SpecificationService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.entity.Example;
 
-import com.pinyougou.mapper.TbSpecificationMapper;
-import com.pinyougou.pojo.TbSpecification;
+import java.util.Arrays;
+import java.util.List;
+
+
 
 
 /**
@@ -22,8 +26,10 @@ import com.pinyougou.pojo.TbSpecification;
  *
  */
 @Service
-public class SpecificationServiceImpl extends CoreServiceImpl<TbSpecification>  implements SpecificationService {
+public class SpecificationServiceImpl extends CoreServiceImpl<TbSpecification> implements SpecificationService {
 
+    @Autowired
+    private TbSpecificationOptionMapper optionMapper;
 	
 	private TbSpecificationMapper specificationMapper;
 
@@ -74,5 +80,62 @@ public class SpecificationServiceImpl extends CoreServiceImpl<TbSpecification>  
 
         return pageInfo;
     }
-	
+
+    @Override
+    public void add(Specification specification) {
+        TbSpecification specification1 = specification.getSpecification();
+
+        specificationMapper.insert(specification1);
+        List<TbSpecificationOption> optionList = specification.getOptionList();
+
+        for (TbSpecificationOption tbSpecificationOption : optionList) {
+            tbSpecificationOption.setSpecId(specification1.getId());
+            optionMapper.insert(tbSpecificationOption);
+        }
+    }
+
+    @Override
+    public Specification findOne(Long id) {
+        Specification specification = new Specification();
+        TbSpecification tbSpecification = specificationMapper.selectByPrimaryKey(id);
+
+        TbSpecificationOption option = new TbSpecificationOption();
+        option.setSpecId(tbSpecification.getId());
+        List<TbSpecificationOption> options = optionMapper.select(option);
+
+        specification.setSpecification(tbSpecification);
+        specification.setOptionList(options);
+        return specification;
+    }
+
+    @Override
+    public void update(Specification specification) {
+        specificationMapper.updateByPrimaryKey(specification.getSpecification());
+        TbSpecificationOption option= new TbSpecificationOption();
+        option.setSpecId(specification.getSpecification().getId());
+        int delete = optionMapper.delete(option);
+
+        List<TbSpecificationOption> optionList = specification.getOptionList();
+        for (TbSpecificationOption tbSpecificationOption : optionList) {
+            tbSpecificationOption.setSpecId(specification.getSpecification().getId());
+            optionMapper.insert(tbSpecificationOption);
+        }
+        //批量插入 要求 主键为ID 并且是自增才可以
+        //optionMapper.insertList(optionList);
+
+    }
+
+    @Override
+    public void delete(Long[] ids) {
+        //删除规格
+        Example example = new Example(TbSpecification.class);
+        example.createCriteria().andIn("id", Arrays.asList(ids));
+        specificationMapper.deleteByExample(example);
+
+        //删除规格关联的规格的选项
+        Example exampleOption = new Example(TbSpecificationOption.class);
+        exampleOption.createCriteria().andIn("specId", Arrays.asList(ids));
+        optionMapper.deleteByExample(exampleOption);
+    }
+
 }

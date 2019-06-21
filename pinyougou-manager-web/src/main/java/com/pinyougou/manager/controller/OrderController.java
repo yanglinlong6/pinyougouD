@@ -1,13 +1,13 @@
 package com.pinyougou.manager.controller;
 import java.util.List;
 
+import com.pinyougou.pojo.Result;
 import org.springframework.web.bind.annotation.*;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.pojo.TbOrder;
 import com.pinyougou.sellergoods.service.OrderService;
 
 import com.github.pagehelper.PageInfo;
-import entity.Result;
 /**
  * controller
  * @author Administrator

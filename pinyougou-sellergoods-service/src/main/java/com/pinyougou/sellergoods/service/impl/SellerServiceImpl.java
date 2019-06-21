@@ -1,4 +1,5 @@
 package com.pinyougou.sellergoods.service.impl;
+import java.util.Date;
 import java.util.List;
 
 import com.pinyougou.sellergoods.service.SellerService;
@@ -158,5 +159,20 @@ public class SellerServiceImpl extends CoreServiceImpl<TbSeller>  implements Sel
 
         return pageInfo;
     }
-	
+
+	@Override
+	public void updateStatus(String id, String status) {
+		TbSeller seller = new TbSeller();
+		seller.setSellerId(id);
+		seller.setStatus(status);
+		//根据主键来更新
+		sellerMapper.updateByPrimaryKeySelective(seller);
+	}
+
+	@Override
+	public void add(TbSeller seller) {
+		seller.setStatus("0");
+		seller.setCreateTime(new Date());
+		sellerMapper.insert(seller);
+	}
 }

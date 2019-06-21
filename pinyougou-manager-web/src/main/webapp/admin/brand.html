@@ -65,7 +65,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for=" entity in brandList">
+                <tr v-for="entity in list">
                     <td><input type="checkbox" :value="entity.id" v-model="ids"></td>
                     <td>{{entity.id}}</td>
                     <td>{{entity.name}}</td>
@@ -102,7 +102,7 @@
                 </tbody>
             </table>
             <!--数据列表/-->
-            <navigation :pages="pages" :current.sync="pageNo" @navpage="searchList"></navigation>
+            <navigation :pages="pages" :current.sync="pageNo"  @navpage="searchList"></navigation>
 
         </div>
         <!-- 数据表格 /-->
@@ -141,10 +141,8 @@
     </div>
 </div>
 </body>
-<!--<script src="../plugins/vue/vue.js"></script>-->
-<!--<script src="../plugins/axios/axios.js"></script>-->
-<script src="../plugins/vue/vuejs-2.5.16.js"></script>
-<script src="../plugins/axios/axios-0.18.0.js"></script>
+<script src="../plugins/vue/vue.js"></script>
+<script src="../plugins/axios/axios.js"></script>
 <script src="../js/controller/brandController.js"></script>
-<script src="../js/controller/pagination.js"></script>
+<script src="../js/pagination.js"></script>
 </html>
