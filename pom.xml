@@ -18,6 +18,9 @@
         <module>pinyougou-core-service</module>
         <module>pinyougou-shop-web</module>
         <module>pinyougou-upload-web</module>
+        <module>pinyougou-content-interface</module>
+        <module>pinyougou-content-service</module>
+        <module>pinyougou-portal-web</module>
     </modules>
     <packaging>pom</packaging>
     <properties>

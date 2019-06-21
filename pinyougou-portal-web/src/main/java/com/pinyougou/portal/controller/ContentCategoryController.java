@@ -1,12 +1,10 @@
-package com.pinyougou.shop.controller;
+package com.pinyougou.portal.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
-import com.pinyougou.pojo.Goods;
+import com.pinyougou.content.service.ContentCategoryService;
 import com.pinyougou.pojo.Result;
-import com.pinyougou.pojo.TbGoods;
-import com.pinyougou.sellergoods.service.GoodsService;
-import org.springframework.security.core.context.SecurityContextHolder;
+import com.pinyougou.pojo.TbContentCategory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,40 +15,38 @@ import java.util.List;
  *
  */
 @RestController
-@RequestMapping("/goods")
-public class GoodsController {
+@RequestMapping("/contentCategory")
+public class ContentCategoryController {
 
 	@Reference
-	private GoodsService goodsService;
+	private ContentCategoryService contentCategoryService;
 	
 	/**
 	 * 返回全部列表
 	 * @return
 	 */
 	@RequestMapping("/findAll")
-	public List<TbGoods> findAll(){			
-		return goodsService.findAll();
+	public List<TbContentCategory> findAll(){			
+		return contentCategoryService.findAll();
 	}
 	
 	
 	
 	@RequestMapping("/findPage")
-    public PageInfo<TbGoods> findPage(@RequestParam(value = "pageNo", defaultValue = "1", required = true) Integer pageNo,
+    public PageInfo<TbContentCategory> findPage(@RequestParam(value = "pageNo", defaultValue = "1", required = true) Integer pageNo,
                                       @RequestParam(value = "pageSize", defaultValue = "10", required = true) Integer pageSize) {
-        return goodsService.findPage(pageNo, pageSize);
+        return contentCategoryService.findPage(pageNo, pageSize);
     }
 	
 	/**
 	 * 增加
-	 * @param goods
+	 * @param contentCategory
 	 * @return
 	 */
 	@RequestMapping("/add")
-	public Result add(@RequestBody Goods goods){
+	public Result add(@RequestBody TbContentCategory contentCategory){
 		try {
-			String name = SecurityContextHolder.getContext().getAuthentication().getName();
-			goods.getGoods().setSellerId(name);
-			goodsService.add(goods);
+			contentCategoryService.add(contentCategory);
 			return new Result(true, "增加成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -60,13 +56,13 @@ public class GoodsController {
 	
 	/**
 	 * 修改
-	 * @param goods
+	 * @param contentCategory
 	 * @return
 	 */
 	@RequestMapping("/update")
-	public Result update(@RequestBody Goods goods){
+	public Result update(@RequestBody TbContentCategory contentCategory){
 		try {
-			goodsService.update(goods);
+			contentCategoryService.update(contentCategory);
 			return new Result(true, "修改成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -80,8 +76,8 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/findOne/{id}")
-	public Goods findOne(@PathVariable(value = "id") Long id){
-		return goodsService.findOne(id);
+	public TbContentCategory findOne(@PathVariable(value = "id") Long id){
+		return contentCategoryService.findOne(id);		
 	}
 	
 	/**
@@ -92,7 +88,7 @@ public class GoodsController {
 	@RequestMapping("/delete")
 	public Result delete(@RequestBody Long[] ids){
 		try {
-			goodsService.delete(ids);
+			contentCategoryService.delete(ids);
 			return new Result(true, "删除成功"); 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -103,10 +99,10 @@ public class GoodsController {
 	
 
 	@RequestMapping("/search")
-    public PageInfo<TbGoods> findPage(@RequestParam(value = "pageNo", defaultValue = "1", required = true) Integer pageNo,
+    public PageInfo<TbContentCategory> findPage(@RequestParam(value = "pageNo", defaultValue = "1", required = true) Integer pageNo,
                                       @RequestParam(value = "pageSize", defaultValue = "10", required = true) Integer pageSize,
-                                      @RequestBody TbGoods goods) {
-		goods.setSellerId(SecurityContextHolder.getContext().getAuthentication().getName());
-        return goodsService.findPage(pageNo, pageSize, goods);
+                                      @RequestBody TbContentCategory contentCategory) {
+        return contentCategoryService.findPage(pageNo, pageSize, contentCategory);
     }
+	
 }

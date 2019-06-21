@@ -1,4 +1,5 @@
 package com.pinyougou.sellergoods.service.impl;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +76,7 @@ public class GoodsServiceImpl extends CoreServiceImpl<TbGoods>  implements Goods
 
         Example example = new Example(TbGoods.class);
         Example.Criteria criteria = example.createCriteria();
-
+        criteria.andEqualTo("isDelete",false);//只查询没有被删除的
         if(goods!=null){			
 						if(StringUtils.isNotBlank(goods.getSellerId())){
 //				criteria.andLike("sellerId","%"+goods.getSellerId()+"%");
@@ -226,5 +227,59 @@ public class GoodsServiceImpl extends CoreServiceImpl<TbGoods>  implements Goods
 			tbItemMapper.insert(tbItem);
 		}
 	}
+	@Override
+	public Goods findOne(Long id) {
+		Goods goods = new Goods();
+		TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
+		TbGoodsDesc tbGoodsDesc = goodsDescMapper.selectByPrimaryKey(id);
 
+		TbItem record = new TbItem();
+		record.setGoodsId(id);
+		List<TbItem> tbItemList = tbItemMapper.select(record);
+		goods.setGoods(tbGoods);
+		goods.setGoodsDesc(tbGoodsDesc);
+		goods.setItemList(tbItemList);
+		return goods;
+	}
+
+	@Override
+	public void update(Goods goods) {
+		TbGoods tbGoods = goods.getGoods();
+		tbGoods.setAuditStatus("0");
+		goodsMapper.updateByPrimaryKey(tbGoods);
+		//更新描述
+		goodsDescMapper.updateByPrimaryKey(goods.getGoodsDesc());
+		//更新SKU  先删除原来的SPUid对应的SKU的列表
+		TbItem record = new TbItem();
+		record.setGoodsId(tbGoods.getId());
+		tbItemMapper.delete(record);
+		//新增就可以了 这里也要判断是否为启用的状态
+		saveItems(goods,tbGoods,goods.getGoodsDesc());
+	}
+
+	@Override
+	public void updateStatus(Long[] ids, String status) {
+		TbGoods record= new TbGoods();
+		record.setAuditStatus(status);
+		Example example = new Example(TbGoods.class);
+		example.createCriteria().andIn("id", Arrays.asList(ids));
+		goodsMapper.updateByExampleSelective(record,example);//update set status=1 where id in (12,3)
+	}
+	@Override
+	public void delete(Object[] ids) {
+		//update tb_goods set is_delete=1 where id in (1,2,3)
+
+		Example exmaple = new Example(TbGoods.class);
+
+		Long[] issss = new Long[ids.length];
+		for (int i = 0; i < ids.length; i++) {
+			issss[i]=(Long)ids[i];
+		}
+		exmaple.createCriteria().andIn("id",Arrays.asList(issss));
+
+		TbGoods tbgoods = new TbGoods();
+		tbgoods.setIsDelete(true);
+		goodsMapper.updateByExampleSelective(tbgoods,exmaple);
+
+	}
 }

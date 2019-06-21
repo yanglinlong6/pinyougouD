@@ -192,25 +192,46 @@
             axios.post('/goods/update.shtml', this.entity).then(function (response) {
                 console.log(response);
                 if (response.data.success) {
-                    app.searchList(1);
+                    // app.searchList(1);
+                    window.location.href="goods.html";
                 }
             }).catch(function (error) {
                 console.log("1231312131321");
             });
         },
         save: function () {
-            if (this.entity.id != null) {
+            if(this.entity.goods.id!=null){
                 this.update();
-            } else {
+            }else{
                 this.add();
             }
         },
         findOne: function (id) {
             axios.get('/goods/findOne/' + id + '.shtml').then(function (response) {
                 app.entity = response.data;
+                //赋值到富文本编辑器
+                editor.html(app.entity.goodsDesc.introduction);
+                //转换JSON显示
+                app.entity.goodsDesc.itemImages=JSON.parse(app.entity.goodsDesc.itemImages);
+                app.entity.goodsDesc.customAttributeItems=JSON.parse(app.entity.goodsDesc.customAttributeItems);
+                app.entity.goodsDesc.specificationItems=JSON.parse(app.entity.goodsDesc.specificationItems);
+                for(var i=0;i<app.entity.itemList.length;i++){
+                    let item = app.entity.itemList[i];
+                    item.spec=JSON.parse(item.spec);
+                }
             }).catch(function (error) {
                 console.log("1231312131321");
             });
+        },
+        isChecked:function (specName,specValue) {
+            var obj = this.searchObjectByKey(this.entity.goodsDesc.specificationItems,'attributeName',specName);
+            console.log(obj);
+            if(obj!=null){
+                if(obj.attributeValue.indexOf(specValue)!=-1){
+                    return true;
+                }
+            }
+            return false;
         },
         dele: function () {
             axios.post('/goods/delete.shtml', this.ids).then(function (response) {
@@ -238,8 +259,12 @@
                         //品牌的列表
                         app.brandTextList=JSON.parse(typeTemplate.brandIds);//[{"id":1,"text":"联想"}]
 
-                        app.entity.goodsDesc.customAttributeItems =
-                            JSON.parse(typeTemplate.customAttributeItems);
+                        // app.entity.goodsDesc.customAttributeItems =
+                        //     JSON.parse(typeTemplate.customAttributeItems);
+                        //获取模板中的扩展属性赋值给desc中的扩展属性属性值。
+                        if(app.entity.goods.id==null) {
+                            app.entity.goodsDesc.customAttributeItems = JSON.parse(typeTemplate.customAttributeItems);
+                        }
 
 
                     }
@@ -348,6 +373,12 @@
 
         this.searchList(1);
         this.findItemCat1List();
+        // 使用插件中的方法getUrlParam（） 返回是一个JSON对象，例如：{id:149187842867989}
+        var request = this.getUrlParam();
+        //获取参数的值
+        console.log(request);
+        //根据ID 获取 商品的信息
+        this.findOne(request.id);
     }
 
 })

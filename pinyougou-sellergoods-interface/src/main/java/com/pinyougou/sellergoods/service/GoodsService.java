@@ -32,5 +32,14 @@ public interface GoodsService extends CoreService<TbGoods> {
 	PageInfo<TbGoods> findPage(Integer pageNo, Integer pageSize, TbGoods Goods);
 
 	public void add(Goods goods);
-	
+
+	public Goods findOne(Long id);
+
+	public void update(Goods goods);
+	/**
+	 * 批量修改状态
+	 * @param ids
+	 * @param status
+	 */
+	public void updateStatus(Long [] ids,String status);
 }

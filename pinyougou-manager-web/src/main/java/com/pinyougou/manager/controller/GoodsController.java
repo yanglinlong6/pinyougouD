@@ -63,7 +63,7 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/update")
-	public Result update(@RequestBody TbGoods goods){
+	public Result update(@RequestBody Goods goods){
 		try {
 			goodsService.update(goods);
 			return new Result(true, "修改成功");
@@ -79,8 +79,8 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/findOne/{id}")
-	public TbGoods findOne(@PathVariable(value = "id") Long id){
-		return goodsService.findOne(id);		
+	public Goods findOne(@PathVariable(value = "id") Long id){
+		return goodsService.findOne(id);
 	}
 	
 	/**
@@ -107,4 +107,15 @@ public class GoodsController {
                                       @RequestBody TbGoods goods) {
         return goodsService.findPage(pageNo, pageSize, goods);
     }
+
+	@RequestMapping("/updateStatus/{status}")
+	public Result updateStatus(@RequestBody Long[] ids, @PathVariable(value="status")  String status){
+		try {
+			goodsService.updateStatus(ids,status);
+			return new Result(true,"更新成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(false,"更新失败");
+		}
+	}
 }
