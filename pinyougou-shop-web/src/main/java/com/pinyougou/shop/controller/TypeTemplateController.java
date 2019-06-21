@@ -1,13 +1,15 @@
-package com.pinyougou.manager.controller;
-import java.util.List;
+package com.pinyougou.shop.controller;
 
-import com.pinyougou.pojo.Result;
-import org.springframework.web.bind.annotation.*;
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.github.pagehelper.PageInfo;
+import com.pinyougou.pojo.Result;
 import com.pinyougou.pojo.TbTypeTemplate;
 import com.pinyougou.sellergoods.service.TypeTemplateService;
+import org.springframework.web.bind.annotation.*;
 
-import com.github.pagehelper.PageInfo;
+import java.util.List;
+import java.util.Map;
+
 /**
  * controller
  * @author Administrator
@@ -104,4 +106,8 @@ public class TypeTemplateController {
         return typeTemplateService.findPage(pageNo, pageSize, typeTemplate);
     }
 
+	@RequestMapping("/findSpecList/{id}")
+	public List<Map> findSepcList(@PathVariable(value = "id") Long id){
+		return typeTemplateService.findSpecList(id);
+	}
 }

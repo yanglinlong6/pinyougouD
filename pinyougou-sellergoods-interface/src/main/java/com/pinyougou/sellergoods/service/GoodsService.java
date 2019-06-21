@@ -1,5 +1,7 @@
 package com.pinyougou.sellergoods.service;
 import java.util.List;
+
+import com.pinyougou.pojo.Goods;
 import com.pinyougou.pojo.TbGoods;
 
 import com.github.pagehelper.PageInfo;
@@ -28,5 +30,7 @@ public interface GoodsService extends CoreService<TbGoods> {
 	 * @return
 	 */
 	PageInfo<TbGoods> findPage(Integer pageNo, Integer pageSize, TbGoods Goods);
+
+	public void add(Goods goods);
 	
 }

@@ -71,12 +71,12 @@ public class ItemCatController {
 	
 	/**
 	 * 获取实体
-	 * @param id
+	 * @param parentId
 	 * @return
 	 */
-	@RequestMapping("/findOne/{id}")
-	public TbItemCat findOne(@PathVariable(value = "id") Long id){
-		return itemCatService.findOne(id);		
+	@RequestMapping("/findOne/{parentId}")
+	public TbItemCat findOne(@PathVariable(value = "id") Long parentId){
+		return itemCatService.findOne(parentId);
 	}
 	
 	/**

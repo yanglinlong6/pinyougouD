@@ -31,7 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             return null;
         }
 
-//        return new User(username,"{noop}"+tbSeller.getPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_SELLER"));
-        return new User(username,tbSeller.getPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_SELLER"));
+        return new User(username,"{noop}"+tbSeller.getPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_SELLER"));
+//        return new User(username,tbSeller.getPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_SELLER"));
     }
 }

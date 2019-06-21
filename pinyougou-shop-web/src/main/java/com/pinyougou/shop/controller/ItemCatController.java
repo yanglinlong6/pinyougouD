@@ -1,51 +1,52 @@
-package com.pinyougou.manager.controller;
+package com.pinyougou.shop.controller;
+
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.github.pagehelper.PageInfo;
+import com.pinyougou.pojo.Result;
+import com.pinyougou.pojo.TbItemCat;
+import com.pinyougou.sellergoods.service.ItemCatService;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
-import com.pinyougou.pojo.Result;
-import org.springframework.web.bind.annotation.*;
-import com.alibaba.dubbo.config.annotation.Reference;
-import com.pinyougou.pojo.TbItem;
-import com.pinyougou.sellergoods.service.ItemService;
-
-import com.github.pagehelper.PageInfo;
 /**
  * controller
  * @author Administrator
  *
  */
 @RestController
-@RequestMapping("/item")
-public class ItemController {
+@RequestMapping("/itemCat")
+public class ItemCatController {
 
 	@Reference
-	private ItemService itemService;
+	private ItemCatService itemCatService;
 	
 	/**
 	 * 返回全部列表
 	 * @return
 	 */
 	@RequestMapping("/findAll")
-	public List<TbItem> findAll(){			
-		return itemService.findAll();
+	public List<TbItemCat> findAll(){			
+		return itemCatService.findAll();
 	}
 	
 	
 	
 	@RequestMapping("/findPage")
-    public PageInfo<TbItem> findPage(@RequestParam(value = "pageNo", defaultValue = "1", required = true) Integer pageNo,
+    public PageInfo<TbItemCat> findPage(@RequestParam(value = "pageNo", defaultValue = "1", required = true) Integer pageNo,
                                       @RequestParam(value = "pageSize", defaultValue = "10", required = true) Integer pageSize) {
-        return itemService.findPage(pageNo, pageSize);
+        return itemCatService.findPage(pageNo, pageSize);
     }
 	
 	/**
 	 * 增加
-	 * @param item
+	 * @param itemCat
 	 * @return
 	 */
 	@RequestMapping("/add")
-	public Result add(@RequestBody TbItem item){
+	public Result add(@RequestBody TbItemCat itemCat){
 		try {
-			itemService.add(item);
+			itemCatService.add(itemCat);
 			return new Result(true, "增加成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -55,13 +56,13 @@ public class ItemController {
 	
 	/**
 	 * 修改
-	 * @param item
+	 * @param itemCat
 	 * @return
 	 */
 	@RequestMapping("/update")
-	public Result update(@RequestBody TbItem item){
+	public Result update(@RequestBody TbItemCat itemCat){
 		try {
-			itemService.update(item);
+			itemCatService.update(itemCat);
 			return new Result(true, "修改成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -71,12 +72,12 @@ public class ItemController {
 	
 	/**
 	 * 获取实体
-	 * @param id
+	 * @param parentId
 	 * @return
 	 */
-	@RequestMapping("/findOne/{id}")
-	public TbItem findOne(@PathVariable(value = "id") Long id){
-		return itemService.findOne(id);
+	@RequestMapping("/findOne/{parentId}")
+	public TbItemCat findOne(@PathVariable(value = "parentId") Long parentId){
+		return itemCatService.findOne(parentId);
 	}
 	
 	/**
@@ -87,7 +88,7 @@ public class ItemController {
 	@RequestMapping("/delete")
 	public Result delete(@RequestBody Long[] ids){
 		try {
-			itemService.delete(ids);
+			itemCatService.delete(ids);
 			return new Result(true, "删除成功"); 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -98,10 +99,10 @@ public class ItemController {
 	
 
 	@RequestMapping("/search")
-    public PageInfo<TbItem> findPage(@RequestParam(value = "pageNo", defaultValue = "1", required = true) Integer pageNo,
+    public PageInfo<TbItemCat> findPage(@RequestParam(value = "pageNo", defaultValue = "1", required = true) Integer pageNo,
                                       @RequestParam(value = "pageSize", defaultValue = "10", required = true) Integer pageSize,
-                                      @RequestBody TbItem item) {
-        return itemService.findPage(pageNo, pageSize, item);
+                                      @RequestBody TbItemCat itemCat) {
+        return itemCatService.findPage(pageNo, pageSize, itemCat);
     }
 	
 }

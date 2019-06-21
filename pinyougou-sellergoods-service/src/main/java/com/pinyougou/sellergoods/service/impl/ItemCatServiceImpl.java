@@ -74,5 +74,14 @@ public class ItemCatServiceImpl extends CoreServiceImpl<TbItemCat>  implements I
 
         return pageInfo;
     }
+
+    @Override
+    public List<TbItemCat> findByParentId(Long parentId) {
+        TbItemCat cat = new TbItemCat();
+        cat.setParentId(parentId);
+        //根据条件查询
+        List<TbItemCat> tbItemCats = itemCatMapper.select(cat);
+        return tbItemCats;
+    }
 	
 }

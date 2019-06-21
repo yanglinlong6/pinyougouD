@@ -1,7 +1,9 @@
 package com.pinyougou.manager.controller;
 import java.util.List;
 
+import com.pinyougou.pojo.Goods;
 import com.pinyougou.pojo.Result;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.pojo.TbGoods;
@@ -43,8 +45,10 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/add")
-	public Result add(@RequestBody TbGoods goods){
+	public Result add(@RequestBody Goods goods){
 		try {
+			String name = SecurityContextHolder.getContext().getAuthentication().getName();
+			goods.getGoods().setSellerId(name);
 			goodsService.add(goods);
 			return new Result(true, "增加成功");
 		} catch (Exception e) {
@@ -103,5 +107,4 @@ public class GoodsController {
                                       @RequestBody TbGoods goods) {
         return goodsService.findPage(pageNo, pageSize, goods);
     }
-	
 }

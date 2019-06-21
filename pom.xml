@@ -17,6 +17,7 @@
         <module>pinyougou-pojo</module>
         <module>pinyougou-core-service</module>
         <module>pinyougou-shop-web</module>
+        <module>pinyougou-upload-web</module>
     </modules>
     <packaging>pom</packaging>
     <properties>

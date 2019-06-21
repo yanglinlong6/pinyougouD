@@ -18,6 +18,7 @@
         <module name="pinyougou-sellergoods-interface" />
         <module name="pinyougou-sellergoods-service" />
         <module name="pinyougou-shop-web" />
+        <module name="pinyougou-upload-web" />
       </profile>
     </annotationProcessing>
   </component>

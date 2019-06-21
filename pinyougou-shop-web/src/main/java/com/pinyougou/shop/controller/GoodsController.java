@@ -2,11 +2,11 @@ package com.pinyougou.shop.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
+import com.pinyougou.pojo.Goods;
 import com.pinyougou.pojo.Result;
-import com.pinyougou.pojo.TbSeller;
-import com.pinyougou.sellergoods.service.SellerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.pinyougou.pojo.TbGoods;
+import com.pinyougou.sellergoods.service.GoodsService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,41 +17,40 @@ import java.util.List;
  *
  */
 @RestController
-@RequestMapping("/seller")
-public class SellerController {
+@RequestMapping("/goods")
+public class GoodsController {
 
 	@Reference
-	private SellerService sellerService;
-
-//	@Autowired
-//	private PasswordEncoder passwordEncoder;
+	private GoodsService goodsService;
+	
 	/**
 	 * 返回全部列表
 	 * @return
 	 */
 	@RequestMapping("/findAll")
-	public List<TbSeller> findAll(){			
-		return sellerService.findAll();
+	public List<TbGoods> findAll(){			
+		return goodsService.findAll();
 	}
 	
 	
 	
 	@RequestMapping("/findPage")
-    public PageInfo<TbSeller> findPage(@RequestParam(value = "pageNo", defaultValue = "1", required = true) Integer pageNo,
+    public PageInfo<TbGoods> findPage(@RequestParam(value = "pageNo", defaultValue = "1", required = true) Integer pageNo,
                                       @RequestParam(value = "pageSize", defaultValue = "10", required = true) Integer pageSize) {
-        return sellerService.findPage(pageNo, pageSize);
+        return goodsService.findPage(pageNo, pageSize);
     }
 	
 	/**
 	 * 增加
-	 * @param seller
+	 * @param goods
 	 * @return
 	 */
 	@RequestMapping("/add")
-	public Result add(@RequestBody TbSeller seller){
+	public Result add(@RequestBody Goods goods){
 		try {
-//			seller.setPassword(passwordEncoder.encode(seller.getPassword()));
-			sellerService.add(seller);
+			String name = SecurityContextHolder.getContext().getAuthentication().getName();
+			goods.getGoods().setSellerId(name);
+			goodsService.add(goods);
 			return new Result(true, "增加成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -61,13 +60,13 @@ public class SellerController {
 	
 	/**
 	 * 修改
-	 * @param seller
+	 * @param goods
 	 * @return
 	 */
 	@RequestMapping("/update")
-	public Result update(@RequestBody TbSeller seller){
+	public Result update(@RequestBody TbGoods goods){
 		try {
-			sellerService.update(seller);
+			goodsService.update(goods);
 			return new Result(true, "修改成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -81,8 +80,8 @@ public class SellerController {
 	 * @return
 	 */
 	@RequestMapping("/findOne/{id}")
-	public TbSeller findOne(@PathVariable(value = "id") Long id){
-		return sellerService.findOne(id);		
+	public TbGoods findOne(@PathVariable(value = "id") Long id){
+		return goodsService.findOne(id);		
 	}
 	
 	/**
@@ -93,7 +92,7 @@ public class SellerController {
 	@RequestMapping("/delete")
 	public Result delete(@RequestBody Long[] ids){
 		try {
-			sellerService.delete(ids);
+			goodsService.delete(ids);
 			return new Result(true, "删除成功"); 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -104,10 +103,10 @@ public class SellerController {
 	
 
 	@RequestMapping("/search")
-    public PageInfo<TbSeller> findPage(@RequestParam(value = "pageNo", defaultValue = "1", required = true) Integer pageNo,
+    public PageInfo<TbGoods> findPage(@RequestParam(value = "pageNo", defaultValue = "1", required = true) Integer pageNo,
                                       @RequestParam(value = "pageSize", defaultValue = "10", required = true) Integer pageSize,
-                                      @RequestBody TbSeller seller) {
-        return sellerService.findPage(pageNo, pageSize, seller);
+                                      @RequestBody TbGoods goods) {
+		goods.setSellerId(SecurityContextHolder.getContext().getAuthentication().getName());
+        return goodsService.findPage(pageNo, pageSize, goods);
     }
-	
 }

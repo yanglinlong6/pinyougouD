@@ -1,6 +1,7 @@
 package com.pinyougou.sellergoods.service.impl;
 import java.util.List;
 
+import com.pinyougou.pojo.TbItemCat;
 import com.pinyougou.sellergoods.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Service;
@@ -122,5 +123,5 @@ public class ItemServiceImpl extends CoreServiceImpl<TbItem>  implements ItemSer
 
         return pageInfo;
     }
-	
+
 }
