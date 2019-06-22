@@ -3,10 +3,10 @@ import java.util.List;
 
 import com.pinyougou.pojo.Goods;
 import com.pinyougou.pojo.Result;
+import com.pinyougou.pojo.TbGoods;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.pinyougou.pojo.TbGoods;
 import com.pinyougou.sellergoods.service.GoodsService;
 
 import com.github.pagehelper.PageInfo;
@@ -27,7 +27,7 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/findAll")
-	public List<TbGoods> findAll(){			
+	public List<TbGoods> findAll(){
 		return goodsService.findAll();
 	}
 	
