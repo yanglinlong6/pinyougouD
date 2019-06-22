@@ -4,6 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.pinyougou.core.service.CoreService;
 import com.pinyougou.pojo.TbContent;
 
+import java.util.List;
+
 /**
  * 服务层接口
  * @author Administrator
@@ -28,5 +30,12 @@ public interface ContentService extends CoreService<TbContent> {
 	 * @return
 	 */
 	PageInfo<TbContent> findPage(Integer pageNo, Integer pageSize, TbContent Content);
+
+	/**
+	 * 根据广告类型ID查询列表
+	 * @param categoryId
+	 * @return
+	 */
+	public List<TbContent> findByCategoryId(Long categoryId);
 	
 }

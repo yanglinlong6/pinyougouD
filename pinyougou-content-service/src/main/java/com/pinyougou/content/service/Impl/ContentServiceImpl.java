@@ -89,5 +89,14 @@ public class ContentServiceImpl extends CoreServiceImpl<TbContent>  implements C
 
         return pageInfo;
     }
-	
+
+	@Override
+	public List<TbContent> findByCategoryId(Long categoryId) {
+		TbContent record = new TbContent();
+		record.setCategoryId(categoryId);
+		record.setStatus("1");//正常的
+		List<TbContent> contents = contentMapper.select(record);
+		return contents;
+	}
+
 }
