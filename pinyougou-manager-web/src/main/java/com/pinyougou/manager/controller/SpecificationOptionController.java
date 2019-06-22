@@ -4,8 +4,8 @@ import java.util.List;
 import com.pinyougou.pojo.Result;
 import org.springframework.web.bind.annotation.*;
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.pinyougou.pojo.TbBrand;
-import com.pinyougou.sellergoods.service.BrandService;
+import com.pinyougou.pojo.TbSpecificationOption;
+import com.pinyougou.sellergoods.service.SpecificationOptionService;
 
 import com.github.pagehelper.PageInfo;
 /**
@@ -14,38 +14,38 @@ import com.github.pagehelper.PageInfo;
  *
  */
 @RestController
-@RequestMapping("/brand")
-public class BrandController {
+@RequestMapping("/specificationOption")
+public class SpecificationOptionController {
 
 	@Reference
-	private BrandService brandService;
+	private SpecificationOptionService specificationOptionService;
 	
 	/**
 	 * 返回全部列表
 	 * @return
 	 */
 	@RequestMapping("/findAll")
-	public List<TbBrand> findAll(){			
-		return brandService.findAll();
+	public List<TbSpecificationOption> findAll(){			
+		return specificationOptionService.findAll();
 	}
 	
 	
 	
 	@RequestMapping("/findPage")
-    public PageInfo<TbBrand> findPage(@RequestParam(value = "pageNo", defaultValue = "1", required = true) Integer pageNo,
+    public PageInfo<TbSpecificationOption> findPage(@RequestParam(value = "pageNo", defaultValue = "1", required = true) Integer pageNo,
                                       @RequestParam(value = "pageSize", defaultValue = "10", required = true) Integer pageSize) {
-        return brandService.findPage(pageNo, pageSize);
+        return specificationOptionService.findPage(pageNo, pageSize);
     }
 	
 	/**
 	 * 增加
-	 * @param brand
+	 * @param specificationOption
 	 * @return
 	 */
 	@RequestMapping("/add")
-	public Result add(@RequestBody TbBrand brand){
+	public Result add(@RequestBody TbSpecificationOption specificationOption){
 		try {
-			brandService.add(brand);
+			specificationOptionService.add(specificationOption);
 			return new Result(true, "增加成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -55,13 +55,13 @@ public class BrandController {
 	
 	/**
 	 * 修改
-	 * @param brand
+	 * @param specificationOption
 	 * @return
 	 */
 	@RequestMapping("/update")
-	public Result update(@RequestBody TbBrand brand){
+	public Result update(@RequestBody TbSpecificationOption specificationOption){
 		try {
-			brandService.update(brand);
+			specificationOptionService.update(specificationOption);
 			return new Result(true, "修改成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -75,8 +75,8 @@ public class BrandController {
 	 * @return
 	 */
 	@RequestMapping("/findOne/{id}")
-	public TbBrand findOne(@PathVariable(value = "id") Long id){
-		return brandService.findOne(id);		
+	public TbSpecificationOption findOne(@PathVariable(value = "id") Long id){
+		return specificationOptionService.findOne(id);		
 	}
 	
 	/**
@@ -87,7 +87,7 @@ public class BrandController {
 	@RequestMapping("/delete")
 	public Result delete(@RequestBody Long[] ids){
 		try {
-			brandService.delete(ids);
+			specificationOptionService.delete(ids);
 			return new Result(true, "删除成功"); 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -98,10 +98,10 @@ public class BrandController {
 	
 
 	@RequestMapping("/search")
-    public PageInfo<TbBrand> findPage(@RequestParam(value = "pageNo", defaultValue = "1", required = true) Integer pageNo,
+    public PageInfo<TbSpecificationOption> findPage(@RequestParam(value = "pageNo", defaultValue = "1", required = true) Integer pageNo,
                                       @RequestParam(value = "pageSize", defaultValue = "10", required = true) Integer pageSize,
-                                      @RequestBody TbBrand brand) {
-        return brandService.findPage(pageNo, pageSize, brand);
+                                      @RequestBody TbSpecificationOption specificationOption) {
+        return specificationOptionService.findPage(pageNo, pageSize, specificationOption);
     }
 	
 }
