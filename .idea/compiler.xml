@@ -21,5 +21,10 @@
         <module name="pinyougou-upload-web" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="pinyougou-content-interface" target="1.8" />
+      <module name="pinyougou-content-service" target="1.8" />
+      <module name="pinyougou-portal-web" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
